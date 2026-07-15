@@ -2700,36 +2700,38 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 #define SWIGTYPE_p_int swig_types[0]
 #define SWIGTYPE_p_long_long swig_types[1]
 #define SWIGTYPE_p_od__Followable swig_types[2]
-#define SWIGTYPE_p_od__Graphic swig_types[3]
-#define SWIGTYPE_p_od__Head swig_types[4]
-#define SWIGTYPE_p_od__HeadDisplay swig_types[5]
-#define SWIGTYPE_p_od__Inlet swig_types[6]
-#define SWIGTYPE_p_od__Object swig_types[7]
-#define SWIGTYPE_p_od__Option swig_types[8]
-#define SWIGTYPE_p_od__Outlet swig_types[9]
-#define SWIGTYPE_p_od__Parameter swig_types[10]
-#define SWIGTYPE_p_od__Port swig_types[11]
-#define SWIGTYPE_p_od__ReferenceCounted swig_types[12]
-#define SWIGTYPE_p_od__Sample swig_types[13]
-#define SWIGTYPE_p_od__SliceHead swig_types[14]
-#define SWIGTYPE_p_od__SliceHeadDisplay swig_types[15]
-#define SWIGTYPE_p_od__Slices swig_types[16]
-#define SWIGTYPE_p_od__StateMachine swig_types[17]
-#define SWIGTYPE_p_od__TapeHead swig_types[18]
-#define SWIGTYPE_p_od__TapeHeadDisplay swig_types[19]
-#define SWIGTYPE_p_od__Task swig_types[20]
-#define SWIGTYPE_p_od__Unit swig_types[21]
-#define SWIGTYPE_p_reseq__ResonantEQ swig_types[22]
-#define SWIGTYPE_p_reseq__ResonantEQMO swig_types[23]
-#define SWIGTYPE_p_short swig_types[24]
-#define SWIGTYPE_p_signed_char swig_types[25]
-#define SWIGTYPE_p_std__vectorT_Slice_t__iterator swig_types[26]
-#define SWIGTYPE_p_unsigned_char swig_types[27]
-#define SWIGTYPE_p_unsigned_int swig_types[28]
-#define SWIGTYPE_p_unsigned_long_long swig_types[29]
-#define SWIGTYPE_p_unsigned_short swig_types[30]
-static swig_type_info *swig_types[32];
-static swig_module_info swig_module = {swig_types, 31, 0, 0, 0, 0};
+#define SWIGTYPE_p_od__FrameBuffer swig_types[3]
+#define SWIGTYPE_p_od__Graphic swig_types[4]
+#define SWIGTYPE_p_od__Head swig_types[5]
+#define SWIGTYPE_p_od__HeadDisplay swig_types[6]
+#define SWIGTYPE_p_od__Inlet swig_types[7]
+#define SWIGTYPE_p_od__Object swig_types[8]
+#define SWIGTYPE_p_od__Option swig_types[9]
+#define SWIGTYPE_p_od__Outlet swig_types[10]
+#define SWIGTYPE_p_od__Parameter swig_types[11]
+#define SWIGTYPE_p_od__Port swig_types[12]
+#define SWIGTYPE_p_od__ReferenceCounted swig_types[13]
+#define SWIGTYPE_p_od__Sample swig_types[14]
+#define SWIGTYPE_p_od__SliceHead swig_types[15]
+#define SWIGTYPE_p_od__SliceHeadDisplay swig_types[16]
+#define SWIGTYPE_p_od__Slices swig_types[17]
+#define SWIGTYPE_p_od__StateMachine swig_types[18]
+#define SWIGTYPE_p_od__TapeHead swig_types[19]
+#define SWIGTYPE_p_od__TapeHeadDisplay swig_types[20]
+#define SWIGTYPE_p_od__Task swig_types[21]
+#define SWIGTYPE_p_od__Unit swig_types[22]
+#define SWIGTYPE_p_reseq__BandsGraphic swig_types[23]
+#define SWIGTYPE_p_reseq__ResonantEQ swig_types[24]
+#define SWIGTYPE_p_reseq__ResonantEQMO swig_types[25]
+#define SWIGTYPE_p_short swig_types[26]
+#define SWIGTYPE_p_signed_char swig_types[27]
+#define SWIGTYPE_p_std__vectorT_Slice_t__iterator swig_types[28]
+#define SWIGTYPE_p_unsigned_char swig_types[29]
+#define SWIGTYPE_p_unsigned_int swig_types[30]
+#define SWIGTYPE_p_unsigned_long_long swig_types[31]
+#define SWIGTYPE_p_unsigned_short swig_types[32]
+static swig_type_info *swig_types[34];
+static swig_module_info swig_module = {swig_types, 33, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2774,6 +2776,7 @@ typedef struct{} LANGUAGE_OBJ;
 #undef SWIGLUA
 #include <ResonantEQ.h>
 #include <ResonantEQMO.h>
+#include <BandsGraphic.h>
 #define SWIGLUA
 using namespace reseq;
 
@@ -2885,6 +2888,93 @@ static swig_lua_class *swig_ResonantEQMO_bases[] = {0,0};
 static const char *swig_ResonantEQMO_base_names[] = {"od::Object *",0};
 static swig_lua_class _wrap_class_ResonantEQMO = { "ResonantEQMO", "ResonantEQMO", &SWIGTYPE_p_reseq__ResonantEQMO,_proxy__wrap_new_ResonantEQMO, swig_delete_ResonantEQMO, swig_ResonantEQMO_methods, swig_ResonantEQMO_attributes, &swig_ResonantEQMO_Sf_SwigStatic, swig_ResonantEQMO_meta, swig_ResonantEQMO_bases, swig_ResonantEQMO_base_names };
 
+static int _wrap_new_BandsGraphic(lua_State* L) { int SWIG_arg = 0; int arg1 ; int arg2 ; int arg3 ; int arg4 ;
+  reseq::BandsGraphic *result = 0 ; SWIG_check_num_args("reseq::BandsGraphic::BandsGraphic",4,4)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("reseq::BandsGraphic::BandsGraphic",1,"int");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("reseq::BandsGraphic::BandsGraphic",2,"int");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("reseq::BandsGraphic::BandsGraphic",3,"int");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("reseq::BandsGraphic::BandsGraphic",4,"int"); arg1 = (int)lua_tonumber(L, 1);
+  arg2 = (int)lua_tonumber(L, 2); arg3 = (int)lua_tonumber(L, 3); arg4 = (int)lua_tonumber(L, 4);
+  result = (reseq::BandsGraphic *)new reseq::BandsGraphic(arg1,arg2,arg3,arg4);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_reseq__BandsGraphic,1); SWIG_arg++;  result->attachLua(); return SWIG_arg;
+  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
+static int _wrap_BandsGraphic_follow(lua_State* L) { int SWIG_arg = 0; reseq::BandsGraphic *arg1 = (reseq::BandsGraphic *) 0 ;
+  reseq::ResonantEQ *arg2 = (reseq::ResonantEQ *) 0 ; SWIG_check_num_args("reseq::BandsGraphic::follow",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("reseq::BandsGraphic::follow",1,"reseq::BandsGraphic *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("reseq::BandsGraphic::follow",2,"reseq::ResonantEQ *");
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_reseq__BandsGraphic,0))){
+    SWIG_fail_ptr("BandsGraphic_follow",1,SWIGTYPE_p_reseq__BandsGraphic); } 
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_reseq__ResonantEQ,0))){
+    SWIG_fail_ptr("BandsGraphic_follow",2,SWIGTYPE_p_reseq__ResonantEQ); }  (arg1)->follow(arg2); return SWIG_arg;
+  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
+static int _wrap_BandsGraphic_followMO(lua_State* L) { int SWIG_arg = 0; reseq::BandsGraphic *arg1 = (reseq::BandsGraphic *) 0 ;
+  reseq::ResonantEQMO *arg2 = (reseq::ResonantEQMO *) 0 ; SWIG_check_num_args("reseq::BandsGraphic::followMO",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("reseq::BandsGraphic::followMO",1,"reseq::BandsGraphic *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("reseq::BandsGraphic::followMO",2,"reseq::ResonantEQMO *");
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_reseq__BandsGraphic,0))){
+    SWIG_fail_ptr("BandsGraphic_followMO",1,SWIGTYPE_p_reseq__BandsGraphic); } 
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_reseq__ResonantEQMO,0))){
+    SWIG_fail_ptr("BandsGraphic_followMO",2,SWIGTYPE_p_reseq__ResonantEQMO); }  (arg1)->followMO(arg2); return SWIG_arg;
+  if(0) SWIG_fail; fail: lua_error(L); return SWIG_arg; }
+static int _wrap_BandsGraphic_draw(lua_State* L) { int SWIG_arg = 0; reseq::BandsGraphic *arg1 = (reseq::BandsGraphic *) 0 ;
+  od::FrameBuffer *arg2 = 0 ; SWIG_check_num_args("reseq::BandsGraphic::draw",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("reseq::BandsGraphic::draw",1,"reseq::BandsGraphic *");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("reseq::BandsGraphic::draw",2,"od::FrameBuffer &");
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_reseq__BandsGraphic,0))){
+    SWIG_fail_ptr("BandsGraphic_draw",1,SWIGTYPE_p_reseq__BandsGraphic); } 
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_od__FrameBuffer,0))){
+    SWIG_fail_ptr("BandsGraphic_draw",2,SWIGTYPE_p_od__FrameBuffer); }  (arg1)->draw(*arg2); return SWIG_arg; if(0) SWIG_fail;
+  fail: lua_error(L); return SWIG_arg; }
+static void swig_delete_BandsGraphic(void *obj) {
+reseq::BandsGraphic *arg1 = (reseq::BandsGraphic *) obj;
+arg1->releaseLua();
+}
+static int _proxy__wrap_new_BandsGraphic(lua_State *L) {
+    assert(lua_istable(L,1));
+    lua_pushcfunction(L,_wrap_new_BandsGraphic);
+    assert(!lua_isnil(L,-1));
+    lua_replace(L,1); /* replace our table with real constructor */
+    lua_call(L,lua_gettop(L)-1,1);
+    return 1;
+}
+static swig_lua_attribute swig_BandsGraphic_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_method swig_BandsGraphic_methods[]= {
+    { "follow", _wrap_BandsGraphic_follow},
+    { "followMO", _wrap_BandsGraphic_followMO},
+    { "draw", _wrap_BandsGraphic_draw},
+    {0,0}
+};
+static swig_lua_method swig_BandsGraphic_meta[] = {
+    {0,0}
+};
+
+static swig_lua_attribute swig_BandsGraphic_Sf_SwigStatic_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_const_info swig_BandsGraphic_Sf_SwigStatic_constants[]= {
+    {0,0,0,0,0,0}
+};
+static swig_lua_method swig_BandsGraphic_Sf_SwigStatic_methods[]= {
+    {0,0}
+};
+static swig_lua_class* swig_BandsGraphic_Sf_SwigStatic_classes[]= {
+    0
+};
+
+static swig_lua_namespace swig_BandsGraphic_Sf_SwigStatic = {
+    "BandsGraphic",
+    swig_BandsGraphic_Sf_SwigStatic_methods,
+    swig_BandsGraphic_Sf_SwigStatic_attributes,
+    swig_BandsGraphic_Sf_SwigStatic_constants,
+    swig_BandsGraphic_Sf_SwigStatic_classes,
+    0
+};
+static swig_lua_class *swig_BandsGraphic_bases[] = {0,0};
+static const char *swig_BandsGraphic_base_names[] = {"od::Graphic *",0};
+static swig_lua_class _wrap_class_BandsGraphic = { "BandsGraphic", "BandsGraphic", &SWIGTYPE_p_reseq__BandsGraphic,_proxy__wrap_new_BandsGraphic, swig_delete_BandsGraphic, swig_BandsGraphic_methods, swig_BandsGraphic_attributes, &swig_BandsGraphic_Sf_SwigStatic, swig_BandsGraphic_meta, swig_BandsGraphic_bases, swig_BandsGraphic_base_names };
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     { "kFbMax", _wrap_kFbMax_get, SWIG_Lua_set_immutable },
     {0,0,0}
@@ -2898,6 +2988,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
 static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_ResonantEQ,
 &_wrap_class_ResonantEQMO,
+&_wrap_class_BandsGraphic,
     0
 };
 static swig_lua_namespace* swig_SwigModule_namespaces[] = {
@@ -2918,6 +3009,21 @@ static swig_lua_namespace swig_SwigModule = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static void *_p_od__TapeHeadTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::Object *) (od::Head *) ((od::TapeHead *) x));
+}
+static void *_p_reseq__ResonantEQTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::Object *)  ((reseq::ResonantEQ *) x));
+}
+static void *_p_od__SliceHeadTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::Object *) (od::Head *)(od::TapeHead *) ((od::SliceHead *) x));
+}
+static void *_p_od__HeadTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::Object *)  ((od::Head *) x));
+}
+static void *_p_reseq__ResonantEQMOTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::Object *)  ((reseq::ResonantEQMO *) x));
+}
 static void *_p_reseq__ResonantEQMOTo_p_od__ReferenceCounted(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((od::ReferenceCounted *) (od::Object *) ((reseq::ResonantEQMO *) x));
 }
@@ -2966,6 +3072,9 @@ static void *_p_od__SlicesTo_p_od__ReferenceCounted(void *x, int *SWIGUNUSEDPARM
 static void *_p_od__GraphicTo_p_od__ReferenceCounted(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((od::ReferenceCounted *)  ((od::Graphic *) x));
 }
+static void *_p_reseq__BandsGraphicTo_p_od__ReferenceCounted(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::ReferenceCounted *) (od::Graphic *) ((reseq::BandsGraphic *) x));
+}
 static void *_p_od__OptionTo_p_od__ReferenceCounted(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((od::ReferenceCounted *)  ((od::Option *) x));
 }
@@ -2981,23 +3090,25 @@ static void *_p_od__SliceHeadTo_p_od__ReferenceCounted(void *x, int *SWIGUNUSEDP
 static void *_p_od__SampleTo_p_od__ReferenceCounted(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((od::ReferenceCounted *)  ((od::Sample *) x));
 }
-static void *_p_od__TapeHeadTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((od::Object *) (od::Head *) ((od::TapeHead *) x));
+static void *_p_od__HeadDisplayTo_p_od__Graphic(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::Graphic *)  ((od::HeadDisplay *) x));
 }
-static void *_p_reseq__ResonantEQTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((od::Object *)  ((reseq::ResonantEQ *) x));
+static void *_p_od__TapeHeadDisplayTo_p_od__Graphic(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::Graphic *) (od::HeadDisplay *) ((od::TapeHeadDisplay *) x));
 }
-static void *_p_od__SliceHeadTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((od::Object *) (od::Head *)(od::TapeHead *) ((od::SliceHead *) x));
+static void *_p_od__SliceHeadDisplayTo_p_od__Graphic(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::Graphic *) (od::HeadDisplay *)(od::TapeHeadDisplay *) ((od::SliceHeadDisplay *) x));
 }
-static void *_p_od__HeadTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((od::Object *)  ((od::Head *) x));
-}
-static void *_p_reseq__ResonantEQMOTo_p_od__Object(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((od::Object *)  ((reseq::ResonantEQMO *) x));
+static void *_p_reseq__BandsGraphicTo_p_od__Graphic(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((od::Graphic *)  ((reseq::BandsGraphic *) x));
 }
 static swig_type_info _swigt__p_int = {"_p_int", "intptr_t *|int *|int_least32_t *|int_fast32_t *|int32_t *|int_fast16_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_long_long = {"_p_long_long", "int_least64_t *|int_fast64_t *|int64_t *|long long *|intmax_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_od__FrameBuffer = {"_p_od__FrameBuffer", "od::FrameBuffer *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_od__Graphic = {"_p_od__Graphic", "od::Graphic *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_od__HeadDisplay = {"_p_od__HeadDisplay", 0, 0, 0, 0, 0};
+static swig_type_info _swigt__p_od__TapeHeadDisplay = {"_p_od__TapeHeadDisplay", 0, 0, 0, 0, 0};
+static swig_type_info _swigt__p_od__SliceHeadDisplay = {"_p_od__SliceHeadDisplay", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_od__Object = {"_p_od__Object", "od::Object *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_od__Head = {"_p_od__Head", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_od__TapeHead = {"_p_od__TapeHead", 0, 0, 0, 0, 0};
@@ -3011,13 +3122,10 @@ static swig_type_info _swigt__p_od__Inlet = {"_p_od__Inlet", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_od__Slices = {"_p_od__Slices", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_od__Unit = {"_p_od__Unit", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_od__Outlet = {"_p_od__Outlet", 0, 0, 0, 0, 0};
-static swig_type_info _swigt__p_od__SliceHeadDisplay = {"_p_od__SliceHeadDisplay", 0, 0, 0, 0, 0};
-static swig_type_info _swigt__p_od__TapeHeadDisplay = {"_p_od__TapeHeadDisplay", 0, 0, 0, 0, 0};
-static swig_type_info _swigt__p_od__HeadDisplay = {"_p_od__HeadDisplay", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_od__Option = {"_p_od__Option", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_od__Sample = {"_p_od__Sample", 0, 0, 0, 0, 0};
-static swig_type_info _swigt__p_od__Graphic = {"_p_od__Graphic", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_od__Port = {"_p_od__Port", 0, 0, 0, 0, 0};
+static swig_type_info _swigt__p_reseq__BandsGraphic = {"_p_reseq__BandsGraphic", "reseq::BandsGraphic *", 0, 0, (void*)&_wrap_class_BandsGraphic, 0};
 static swig_type_info _swigt__p_reseq__ResonantEQ = {"_p_reseq__ResonantEQ", "reseq::ResonantEQ *", 0, 0, (void*)&_wrap_class_ResonantEQ, 0};
 static swig_type_info _swigt__p_reseq__ResonantEQMO = {"_p_reseq__ResonantEQMO", "reseq::ResonantEQMO *", 0, 0, (void*)&_wrap_class_ResonantEQMO, 0};
 static swig_type_info _swigt__p_short = {"_p_short", "short *|int_least16_t *|int16_t *", 0, 0, (void*)0, 0};
@@ -3032,6 +3140,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_int,
   &_swigt__p_long_long,
   &_swigt__p_od__Followable,
+  &_swigt__p_od__FrameBuffer,
   &_swigt__p_od__Graphic,
   &_swigt__p_od__Head,
   &_swigt__p_od__HeadDisplay,
@@ -3051,6 +3160,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_od__TapeHeadDisplay,
   &_swigt__p_od__Task,
   &_swigt__p_od__Unit,
+  &_swigt__p_reseq__BandsGraphic,
   &_swigt__p_reseq__ResonantEQ,
   &_swigt__p_reseq__ResonantEQMO,
   &_swigt__p_short,
@@ -3064,6 +3174,11 @@ static swig_type_info *swig_type_initial[] = {
 
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_od__FrameBuffer[] = {  {&_swigt__p_od__FrameBuffer, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_od__HeadDisplay[] = {{&_swigt__p_od__HeadDisplay, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_od__TapeHeadDisplay[] = {{&_swigt__p_od__TapeHeadDisplay, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_od__SliceHeadDisplay[] = {{&_swigt__p_od__SliceHeadDisplay, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_od__Graphic[] = {  {&_swigt__p_od__HeadDisplay, _p_od__HeadDisplayTo_p_od__Graphic, 0, 0},  {&_swigt__p_od__TapeHeadDisplay, _p_od__TapeHeadDisplayTo_p_od__Graphic, 0, 0},  {&_swigt__p_od__SliceHeadDisplay, _p_od__SliceHeadDisplayTo_p_od__Graphic, 0, 0},  {&_swigt__p_od__Graphic, 0, 0, 0},  {&_swigt__p_reseq__BandsGraphic, _p_reseq__BandsGraphicTo_p_od__Graphic, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_od__Head[] = {{&_swigt__p_od__Head, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_od__TapeHead[] = {{&_swigt__p_od__TapeHead, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_od__SliceHead[] = {{&_swigt__p_od__SliceHead, 0, 0, 0},{0, 0, 0, 0}};
@@ -3076,14 +3191,11 @@ static swig_cast_info _swigc__p_od__Inlet[] = {{&_swigt__p_od__Inlet, 0, 0, 0},{
 static swig_cast_info _swigc__p_od__Slices[] = {{&_swigt__p_od__Slices, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_od__Unit[] = {{&_swigt__p_od__Unit, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_od__Outlet[] = {{&_swigt__p_od__Outlet, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_od__SliceHeadDisplay[] = {{&_swigt__p_od__SliceHeadDisplay, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_od__TapeHeadDisplay[] = {{&_swigt__p_od__TapeHeadDisplay, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_od__HeadDisplay[] = {{&_swigt__p_od__HeadDisplay, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_od__Option[] = {{&_swigt__p_od__Option, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_od__Sample[] = {{&_swigt__p_od__Sample, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_od__Graphic[] = {{&_swigt__p_od__Graphic, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_od__Port[] = {{&_swigt__p_od__Port, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_od__ReferenceCounted[] = {  {&_swigt__p_reseq__ResonantEQMO, _p_reseq__ResonantEQMOTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Parameter, _p_od__ParameterTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__StateMachine, _p_od__StateMachineTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Task, _p_od__TaskTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_reseq__ResonantEQ, _p_reseq__ResonantEQTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Followable, _p_od__FollowableTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Inlet, _p_od__InletTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__TapeHead, _p_od__TapeHeadTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Slices, _p_od__SlicesTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Unit, _p_od__UnitTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Head, _p_od__HeadTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Outlet, _p_od__OutletTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__ReferenceCounted, 0, 0, 0},  {&_swigt__p_od__SliceHeadDisplay, _p_od__SliceHeadDisplayTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__TapeHeadDisplay, _p_od__TapeHeadDisplayTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__HeadDisplay, _p_od__HeadDisplayTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Option, _p_od__OptionTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Sample, _p_od__SampleTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Graphic, _p_od__GraphicTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__SliceHead, _p_od__SliceHeadTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Object, _p_od__ObjectTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Port, _p_od__PortTo_p_od__ReferenceCounted, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_od__ReferenceCounted[] = {  {&_swigt__p_reseq__ResonantEQMO, _p_reseq__ResonantEQMOTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Parameter, _p_od__ParameterTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__StateMachine, _p_od__StateMachineTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Task, _p_od__TaskTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_reseq__ResonantEQ, _p_reseq__ResonantEQTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Followable, _p_od__FollowableTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Inlet, _p_od__InletTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__TapeHead, _p_od__TapeHeadTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Slices, _p_od__SlicesTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Unit, _p_od__UnitTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Head, _p_od__HeadTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Outlet, _p_od__OutletTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__ReferenceCounted, 0, 0, 0},  {&_swigt__p_od__SliceHeadDisplay, _p_od__SliceHeadDisplayTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__TapeHeadDisplay, _p_od__TapeHeadDisplayTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__HeadDisplay, _p_od__HeadDisplayTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Option, _p_od__OptionTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Sample, _p_od__SampleTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Graphic, _p_od__GraphicTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_reseq__BandsGraphic, _p_reseq__BandsGraphicTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__SliceHead, _p_od__SliceHeadTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Object, _p_od__ObjectTo_p_od__ReferenceCounted, 0, 0},  {&_swigt__p_od__Port, _p_od__PortTo_p_od__ReferenceCounted, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_reseq__BandsGraphic[] = {  {&_swigt__p_reseq__BandsGraphic, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_reseq__ResonantEQ[] = {  {&_swigt__p_reseq__ResonantEQ, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_reseq__ResonantEQMO[] = {  {&_swigt__p_reseq__ResonantEQMO, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
@@ -3098,6 +3210,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_int,
   _swigc__p_long_long,
   _swigc__p_od__Followable,
+  _swigc__p_od__FrameBuffer,
   _swigc__p_od__Graphic,
   _swigc__p_od__Head,
   _swigc__p_od__HeadDisplay,
@@ -3117,6 +3230,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_od__TapeHeadDisplay,
   _swigc__p_od__Task,
   _swigc__p_od__Unit,
+  _swigc__p_reseq__BandsGraphic,
   _swigc__p_reseq__ResonantEQ,
   _swigc__p_reseq__ResonantEQMO,
   _swigc__p_short,

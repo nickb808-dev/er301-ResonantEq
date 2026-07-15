@@ -1,4 +1,4 @@
-/* ResonantEQ.cpp — Serge Resonant Equalizer clone (STEREO) for ER-301 v0.3.0
+/* ResonantEQ.cpp — Serge Resonant Equalizer clone (STEREO) for ER-301 v0.5.0
  *
  * See ResonantEQ.h; shared DSP in reseq_dsp.h.  Ten parallel Cytomic SVFs per
  * channel, summed to OutL / OutR.  No runtime libm trig. */
@@ -31,8 +31,11 @@ void ResonantEQ::process()
     float *outR = mOutR.buffer();
     const int N = FRAMELENGTH;
 
-    for (int i = 0; i < kNumBands; ++i)
-        mC[i] = computeBand(i, mBand[i].buffer()[0]);
+    for (int i = 0; i < kNumBands; ++i) {
+        const float cv = mBand[i].buffer()[0];
+        mBandView[i] = cv < -1.0f ? -1.0f : (cv > 1.0f ? 1.0f : cv);
+        mC[i] = computeBand(i, cv);
+    }
 
     const float level  = std::max(0.0f, std::min(mLevelIn.buffer()[0], 2.0f));
     const float lvStep = (level - mLastLevel) * (1.0f / float(N));

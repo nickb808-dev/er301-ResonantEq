@@ -1,4 +1,4 @@
--- ResonantEQMO.lua — ER-301 wrapper for Resonant EQ MO (mono, multi-out + FB) v0.4.0
+-- ResonantEQMO.lua — ER-301 wrapper for Resonant EQ MO (mono, multi-out + FB) v0.5.0
 --
 -- Mono Serge Resonant EQ with the hardware's three outs, plus per-comb feedback:
 --   In1 → In → [10 resonant bandpass, per-band CV]
@@ -16,6 +16,7 @@ local Class    = Class or require "Base.Class"
 local Unit     = require "Unit"
 local GainBias = require "Unit.ViewControl.GainBias"
 local Encoder  = require "Encoder"
+local BandsView = require "reseq.BandsView"
 
 local libreseq = require "reseq.libreseq"
 
@@ -132,6 +133,14 @@ function ResonantEQMO:onLoadViews(objects, branches)
     gainMap     = Encoder.getMap("[-1,1]"),
   }
   expanded[13] = "level"
+
+  -- Live band-value phosphor scope (Dirac/Varia-style), leading the strip.
+  controls.bands = BandsView {
+    name  = "bands",
+    mo    = objects.eq,
+    width = app.SECTION_PLY,
+  }
+  table.insert(expanded, 1, "bands")
 
   return controls, { expanded = expanded, collapsed = {} }
 end

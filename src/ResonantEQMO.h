@@ -1,5 +1,5 @@
 /* ResonantEQMO.h — Serge Resonant Equalizer clone (MONO, MULTI-OUT + FEEDBACK)
- *                  for ER-301 v0.3.0
+ *                  for ER-301 v0.5.0
  *
  * The mono, multi-output sibling of ResonantEQ.  Ten fixed-frequency resonant
  * bandpass filters (shared band table / voicing in reseq_dsp.h) with three outs:
@@ -45,6 +45,13 @@ public:
 #ifndef SWIGLUA
     void process() override;
 
+    // Live band value for the bands graphic (read each UI frame; block-rate
+    // snapshot published by process() — Varia getFL/getFH pattern).
+    float getBand(int i) const
+    {
+        return (i >= 0 && i < kNumBands) ? mBandView[i] : 0.0f;
+    }
+
 private:
     od::Inlet  mIn {"In"};
     od::Inlet  mBand[kNumBands] {
@@ -62,6 +69,7 @@ private:
     od::Outlet mComb2 {"Comb2"};     // Out3 — even bands
 
     BandCoeffs mC[kNumBands];        // per-block band coefficients
+    float mBandView[kNumBands] = {0};// clamped CVs, for the graphic
     float mIc1[kNumBands] = {0}, mIc2[kNumBands] = {0};
     float mFb1State = 0.0f;          // last sample's Comb1, for its feedback path
     float mFb2State = 0.0f;          // last sample's Comb2, for its feedback path

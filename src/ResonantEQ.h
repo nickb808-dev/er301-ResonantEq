@@ -1,4 +1,4 @@
-/* ResonantEQ.h — Serge Resonant Equalizer clone (STEREO) for ER-301 v0.3.0
+/* ResonantEQ.h — Serge Resonant Equalizer clone (STEREO) for ER-301 v0.5.0
  *
  * The plain stereo Resonant EQ: ten fixed-frequency resonant bandpass filters
  * summed to a single output, per channel.  Bands at the classic Serge set
@@ -31,6 +31,13 @@ public:
 #ifndef SWIGLUA
     void process() override;
 
+    // Live band value for the bands graphic (read each UI frame; block-rate
+    // snapshot published by process() — Varia getFL/getFH pattern).
+    float getBand(int i) const
+    {
+        return (i >= 0 && i < kNumBands) ? mBandView[i] : 0.0f;
+    }
+
 private:
     od::Inlet  mInL {"InL"};
     od::Inlet  mInR {"InR"};
@@ -46,6 +53,7 @@ private:
     od::Outlet mOutR {"OutR"};
 
     BandCoeffs mC[kNumBands];                      // per-block band coefficients
+    float mBandView[kNumBands] = {0};              // clamped CVs, for the graphic
     float mIc1L[kNumBands] = {0}, mIc2L[kNumBands] = {0};
     float mIc1R[kNumBands] = {0}, mIc2R[kNumBands] = {0};
     float mLastLevel = 1.0f;

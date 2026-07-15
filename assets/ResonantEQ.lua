@@ -1,4 +1,4 @@
--- ResonantEQ.lua — ER-301 unit wrapper for Resonant EQ (STEREO) v0.3.0
+-- ResonantEQ.lua — ER-301 unit wrapper for Resonant EQ (STEREO) v0.5.0
 --
 -- The plain stereo Serge Resonant EQ: ten fixed-frequency resonant bandpass
 -- filters summed to one output, per channel.  Bands (Hz): 29 · 61 · 115 · 218 ·
@@ -12,6 +12,7 @@ local Class    = Class or require "Base.Class"
 local Unit     = require "Unit"
 local GainBias = require "Unit.ViewControl.GainBias"
 local Encoder  = require "Encoder"
+local BandsView = require "reseq.BandsView"
 
 local libreseq = require "reseq.libreseq"
 
@@ -88,6 +89,14 @@ function ResonantEQ:onLoadViews(objects, branches)
     gainMap     = Encoder.getMap("[-1,1]"),
   }
   expanded[11] = "level"
+
+  -- Live band-value phosphor scope (Dirac/Varia-style), leading the strip.
+  controls.bands = BandsView {
+    name  = "bands",
+    eq    = objects.eq,
+    width = app.SECTION_PLY,
+  }
+  table.insert(expanded, 1, "bands")
 
   return controls, { expanded = expanded, collapsed = {} }
 end
