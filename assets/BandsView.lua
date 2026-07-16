@@ -40,12 +40,22 @@ function BandsView:init(args)
     self:addSpotDescriptor{ center = (i - 0.5) * ply }
   end
 
-  -- Sub display: title (no editable parameters).
+  -- Sub display: Daisaku Ikeda epigraph (display has no editable parameters).
   self.subGraphic = app.Graphic(0, 0, 128, 64)
-  local label = app.Label("Res EQ — band values", 10)
-  label:fitToText(0)
-  label:setCenter(64, 32)
-  self.subGraphic:addChild(label)
+  local lines = {
+    { "When resonant harmonies", 54 },   -- y descending from the top
+    { "arise between this vast",  45 },
+    { "outer cosmos and the",     36 },
+    { "inner human cosmos,",      27 },
+    { "poetry is born.",          18 },
+    { "- Daisaku Ikeda",           9 },
+  }
+  for _, ln in ipairs(lines) do
+    local label = app.Label(ln[1], 8)
+    label:fitToText(0)
+    label:setCenter(64, ln[2])
+    self.subGraphic:addChild(label)
+  end
 end
 
 return BandsView

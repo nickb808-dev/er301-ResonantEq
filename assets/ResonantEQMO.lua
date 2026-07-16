@@ -22,7 +22,7 @@ local libreseq = require "reseq.libreseq"
 
 local BAND_LABELS = {"29", "61", "115", "218", "411", "777", "1.5k", "2.8k", "5.2k", "11k"}
 local BAND_DESC   = {"29 Hz", "61 Hz", "115 Hz", "218 Hz", "411 Hz", "777 Hz",
-                     "1.5 kHz", "2.8 kHz", "5.2 kHz", "11 kHz"}
+                     "1500 Hz", "2800 Hz", "5200 Hz", "11000 Hz"}
 
 local ResonantEQMO = Class {}
 ResonantEQMO:include(Unit)
@@ -87,7 +87,7 @@ function ResonantEQMO:onLoadViews(objects, branches)
     local name = "band" .. i
     controls[name] = GainBias {
       button      = BAND_LABELS[i],
-      description = BAND_DESC[i] .. "  cut ‹ flat › boost › resonate",
+      description = BAND_DESC[i],
       branch      = branches[name],
       gainbias    = objects[name],
       range       = objects[name .. "Range"],
