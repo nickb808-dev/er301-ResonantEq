@@ -113,6 +113,33 @@ the 29 Hz band's envelope stays smooth while the highs still track fast.
 Controls: ten band CVs, **Regen**, **Env Rise**, **Env Fall**, **Env Gain**,
 **Drift**, **Level**.
 
+#### Accessing the per-band envelope outputs
+
+The ten followers are exposed as **sub-outputs** you pick from the **Local source
+chooser** — the same screen you use to patch any in-chain signal into a
+CV/modulation input. On [stolmine](https://github.com/stolmine/er-301-stolmine)
+firmware:
+
+1. Go to the parameter you want the envelope to drive — a modulation input on
+   another unit (filter cutoff, VCA level, oscillator pitch, another EQ band…) —
+   and open its source assignment, then switch to the **Local** sources tab.
+2. **Focus the Resonant EQ AN unit** in that list. Because it's multi-out, an
+   indicator appears showing `X/Y` and the sub-out label (e.g. `3/11  env2`).
+3. Press **M6** (the sixth main button, under the scope) to **cycle** the
+   sub-outs: `main → env1 → env2 → … → env10 → main`. The scope auditions the
+   focused one, so you can watch the envelope move before committing.
+4. **Enter** selects the shown sub-out as your source.
+
+Sub-out map: `main` (Out1) = audio; `env1` = 29 Hz band envelope, `env2` = 61 Hz,
+… `env10` = 11 kHz. The envelopes are unipolar CV (scaled by **Env Gain**) meant
+for modulation — spectral-following: low-band envelope → a sub's VCA, presence
+band → a reverb send, or the whole bank across a set of voices for a crude
+vocoder.
+
+> **Vanilla firmware:** `subOutLabels` is ignored and only sub-out 1 (**Main**,
+> Out1) and sub-out 2 (**Env1**, Out2) surface as the stereo pair — the other
+> nine envelopes aren't reachable. The M6 sub-out picker is a stolmine feature.
+
 ---
 
 ## Drift — analog component tolerance
