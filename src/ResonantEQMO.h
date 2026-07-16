@@ -62,6 +62,7 @@ private:
     };
     od::Inlet  mComb1FbIn {"Comb1FB"};
     od::Inlet  mComb2FbIn {"Comb2FB"};
+    od::Inlet  mDriftIn   {"Drift"};
     od::Inlet  mLevelIn    {"Level"};
 
     od::Outlet mMain  {"Main"};      // Out1 (primary) — all bands

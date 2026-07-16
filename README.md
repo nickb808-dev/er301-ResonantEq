@@ -7,13 +7,19 @@ resonant bandpass at a classic Serge centre frequency; sweep a band from a deep
 cancellation notch, through flat, up to a boosted resonant peak that pings and
 self-oscillates.
 
-The package ships **two units** that share one DSP core:
+The package ships **three units** that share one DSP core:
 
 - **Resonant EQ** — stereo, single all-bands output. The clean spectral shaper.
 - **Resonant EQ MO** — mono, multi-output (Main + two combs) with per-comb
   feedback for regeneration and self-oscillation.
+- **Resonant EQ AN** — mono analyzer: Main + an envelope follower on every band,
+  a live 10-band spectral-CV bank (a resonant EQ and a vocoder analysis front-end
+  in one).
 
-Package name on the ER-301: **Resonant EQ** (`reseq`), version 0.4.0.
+Every unit also has **Drift** (analog component tolerance) and a live band-value
+phosphor scope.
+
+Package name on the ER-301: **Resonant EQ** (`reseq`), version 0.6.1.
 
 ---
 
@@ -79,6 +85,46 @@ like a single global feedback.
 Controls: ten band CVs, **fb1** (Comb 1 feedback), **fb2** (Comb 2 feedback),
 and **Level**.
 
+### Resonant EQ AN (mono analyzer, multi-out)
+
+The same ten resonant bands, plus an **envelope follower on each band** — a live
+10-band spectral-CV bank:
+
+```
+In1 → In → [10 resonant bandpass, per-band CV]
+              ├─ Σ all bands ────────────────────→ Main       → Out1  (audio)
+              └─ envelope follower per band ──────→ Env1…Env10 → Out2…Out11
+```
+
+**11 sub-outs** (`channelCount = 11`): on stolmine firmware all are individually
+pickable; vanilla degrades to `Main` + `Env1`. It's a Serge resonant EQ and a
+10-band vocoder/spectral analysis front-end at once — patch the envelopes to
+drive anything.
+
+**Regen** is a single feedback knob that folds `Main` back into the input. Because
+`Main` is the gain-weighted sum of the bands, feeding it back regenerates the
+*boosted* bands more than the flat/cut ones — the regeneration follows your EQ
+curve from one control, and pushes into bounded self-oscillation at the top.
+
+The follower has **Env Rise** / **Env Fall** (attack/release) and **Env Gain**
+(CV-bank scale). Each band's smoothing speed is floored by its own frequency, so
+the 29 Hz band's envelope stays smooth while the highs still track fast.
+
+Controls: ten band CVs, **Regen**, **Env Rise**, **Env Fall**, **Env Gain**,
+**Drift**, **Level**.
+
+---
+
+## Drift — analog component tolerance
+
+Every unit has a **Drift** knob `[0, 1]`. Each band carries a fixed characteristic
+offset in its centre frequency (±~3%) and Q (±~25%), and Drift scales how much is
+applied: **0** = mathematically perfect (default, bit-identical to no Drift), **1**
+= "vintage-loose", where every band pulls off its nominal tuning by its own
+amount so the bank feels organic instead of clinical. The offsets are fixed (a
+specific unit's "component values"), not randomised, and add **no harmonics** —
+it's pure frequency/Q variety, not distortion.
+
 ---
 
 ## How it works (DSP)
@@ -106,16 +152,20 @@ res-e/  (package name: reseq)
   Makefile / Dockerfile
   LICENSE / NOTICE.md
   src/
-    reseq_dsp.h        shared core: band table, kBandG trig-const table,
-                       sanitize/softLimit, computeBand (CV → coeffs)
+    reseq_dsp.h        shared core: band table, kBandG trig-const table, Drift
+                       tolerance tables, sanitize/softLimit, computeBand
     ResonantEQ.h/.cpp    stereo unit — all-bands Main, no feedback
     ResonantEQMO.h/.cpp  mono multi-out unit — Main/Comb1/Comb2 + per-comb feedback
+    ResonantEQAN.h/.cpp  mono analyzer — Main + 10 env followers + Regen
+    BandsGraphic.h       phosphor band-value scope (followable from a unit)
     libreseq.swig
     compat.cpp / compat_swig.h
   assets/
     toc.lua              package manifest
     ResonantEQ.lua       stereo unit wrapper
-    ResonantEQMO.lua     multi-out unit wrapper (bands + fb1/fb2 + level)
+    ResonantEQMO.lua     multi-out unit wrapper (bands + fb1/fb2 + drift + level)
+    ResonantEQAN.lua     analyzer wrapper (bands + regen + env + drift, 11 outs)
+    BandsView.lua        band-value scope ViewControl
   test/host/             host simulation harness + od stubs
 ```
 
@@ -130,10 +180,10 @@ folder:
 make docker-image                       # first time only (shared image)
 make swig-docker  ER301_SDK=~/er-301    # generate the SWIG Lua wrapper
 make docker-build ER301_SDK=~/er-301    # cross-compile the .so
-make pkg                                # → build/am335x/reseq-0.4.0.pkg
+make pkg                                # → build/am335x/reseq-0.6.1.pkg
 ```
 
-Copy **only** the new `reseq-0.4.0.pkg` to the card's `ER-301/packages/` folder
+Copy **only** the new `reseq-0.6.1.pkg` to the card's `ER-301/packages/` folder
 (remove any older `reseq-*.pkg` so they don't shadow it), then **reboot the
 ER-301**. A package's compiled `.so` does not hot-swap — the old native library
 stays resident until reboot, so skipping the reboot can leave you with updated
@@ -145,14 +195,16 @@ The DSP is verified off-device:
 
 ```bash
 g++ -std=c++17 -O2 -ffast-math -Dprivate=public -Itest/host -Isrc \
-    src/ResonantEQ.cpp src/ResonantEQMO.cpp test/host/main.cpp -o t
+    src/ResonantEQ.cpp src/ResonantEQMO.cpp src/ResonantEQAN.cpp test/host/main.cpp -o t
 ./t sflat      # stereo flat response (~2.5 dB ripple)
 ./t sband 5    # a band boosts/cuts as expected
-./t sstereo    # stereo L/R bit-identical
-./t moflat     # multi-out Main flat
 ./t comb       # combs split odd/even; Main == Comb1 + Comb2
 ./t fb         # feedback lifts the peak; full feedback self-oscillates (bounded)
 ./t fbsplit    # each comb's feedback favours its own comb (independence)
+./t drift      # Drift detunes a band's peak off nominal; bounded
+./t antrack    # AN: a tone peaks the envelope of its matching band
+./t anenv      # AN: env rise/fall; low-band envelope stays smooth
+./t anstab     # AN: Regen self-oscillates bounded; all env outs finite
 ./t stab       # long noise run, max feedback → finite, bounded
 ./t nan        # NaN input → finite output
 ```
@@ -161,8 +213,10 @@ g++ -std=c++17 -O2 -ffast-math -Dprivate=public -Itest/host -Isrc \
 
 ## Status
 
-**v0.4.0** — host-verified, running on hardware. The stereo and multi-out units,
-combs, and independent per-comb feedback are all in place.
+**v0.6.1** — host-verified. Three units (stereo / multi-out+feedback / analyzer),
+per-comb feedback, the 10-band envelope-follower bank with Regen, and Drift are
+all in place. The one thing that only proves out on hardware is how the analyzer's
+**11 sub-outs** surface in the stolmine multi-out picker.
 
 ## Credits
 

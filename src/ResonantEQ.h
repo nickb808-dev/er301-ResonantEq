@@ -47,6 +47,7 @@ private:
         od::Inlet{"Band7"}, od::Inlet{"Band8"}, od::Inlet{"Band9"},
         od::Inlet{"Band10"}
     };
+    od::Inlet  mDriftIn {"Drift"};
     od::Inlet  mLevelIn {"Level"};
 
     od::Outlet mOutL {"OutL"};

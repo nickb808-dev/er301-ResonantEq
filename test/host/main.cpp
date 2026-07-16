@@ -13,6 +13,7 @@
 //   nan          both: NaN input → finite output
 #include "ResonantEQ.h"
 #include "ResonantEQMO.h"
+#include "ResonantEQAN.h"
 #include <hal/fft.h>
 #include <cstdio>
 #include <cstring>
@@ -220,6 +221,107 @@ int main(int argc, char **argv)
             for(int s=0;s<FRAMELENGTH;++s){ if(!std::isfinite(ds.mOutL.buffer()[s])||!std::isfinite(dm.mMain.buffer()[s]))nf++; } }
         printf("nan: nonFinite=%ld  %s\n", nf, nf?"FAIL":"PASS");
         return nf?1:0;
+    }
+
+    if (!strcmp(argv[1], "drift")) {
+        // Boost band 3 (218 Hz) to high resonance; Drift pulls its peak OFF the
+        // nominal centre (component tolerance).  Peak freq shifts, response @218
+        // drops, everything finite/bounded.  Drift 0 = untouched (bit-identical,
+        // covered by the other tests passing with the inlet unset).
+        auto renderDrift = [&](float dr, std::vector<double> &H){
+            ResonantEQ d; const float A = 0.001f; std::vector<float> ir(size_t(L), 0.0f);
+            int got = 0; long blk = 0;
+            while (got < L) {
+                for (int i = 0; i < kNumBands; ++i) fill(d.mBand[i], i==3 ? 0.9f : 0.0f);
+                fill(d.mDriftIn, dr); fill(d.mLevelIn, 1.0f);
+                for (int s = 0; s < FRAMELENGTH; ++s){ d.mInL.buffer()[s]=(blk==0&&s==0)?A:0.f; d.mInR.buffer()[s]=0.f; }
+                d.process();
+                for (int s = 0; s < FRAMELENGTH && got < L; ++s) ir[got++] = d.mOutL.buffer()[s];
+                ++blk;
+            }
+            toDb(ir, L, A, H);
+        };
+        auto pkFreq = [&](std::vector<double> &H){ double pk=-1e9; int kk=0;
+            for (int k=1;k<L/2;++k){ double f=double(k)*kSampleRate/double(L); if(f>150&&f<320&&H[k]>pk){pk=H[k];kk=k;} }
+            return double(kk)*kSampleRate/double(L); };
+        std::vector<double> H0,H1; renderDrift(0.0f,H0); renderDrift(1.0f,H1);
+        const double f0=pkFreq(H0), f1=pkFreq(H1);
+        const double r0=atFreq(H0,L,218.0), r1=atFreq(H1,L,218.0);
+        // Bounded at full drift + all bands resonant + noise.
+        ResonantEQ s; long nf=0; float peak=0; uint32_t rng=0x51u;
+        for (int b=0;b<3000;++b){ for(int i=0;i<kNumBands;++i) fill(s.mBand[i],0.8f); fill(s.mDriftIn,1.0f); fill(s.mLevelIn,1.0f);
+            for(int i=0;i<FRAMELENGTH;++i){ rng^=rng<<13;rng^=rng>>17;rng^=rng<<5; float x=(float(rng&0xFFFF)/32768.f-1.f)*0.5f; s.mInL.buffer()[i]=x; s.mInR.buffer()[i]=x; }
+            s.process(); for(int i=0;i<FRAMELENGTH;++i){ float y=s.mOutL.buffer()[i]; if(!std::isfinite(y))nf++; else if(fabsf(y)>peak)peak=fabsf(y);} }
+        const bool ok = fabs(f1-f0)>2.0 && r1 < r0-0.5 && nf==0 && peak<=1.001f;
+        printf("drift: band3 peak %.0fHz(d0)->%.0fHz(d1)  resp@218 %+.1f->%+.1f dB  bounded(nf=%ld pk=%.3f)  %s\n",
+               f0,f1,r0,r1,nf,peak,ok?"PASS":"FAIL");
+        return ok?0:1;
+    }
+
+    // ── Analyzer unit (Resonant EQ AN): Main + 10 per-band envelope followers ──
+    if (!strcmp(argv[1], "antrack")) {
+        // A tone at a band centre must produce its PEAK envelope at that band.
+        auto setAN = [](ResonantEQAN &d){
+            for (int i=0;i<kNumBands;++i) fill(d.mBand[i],0.0f);
+            fill(d.mRegenIn,0.0f); fill(d.mEnvRiseIn,0.7f); fill(d.mEnvFallIn,0.3f);
+            fill(d.mEnvGainIn,1.0f); fill(d.mLevelIn,1.0f);
+        };
+        bool ok=true;
+        const int expect[3]={2,5,8}; const float tones[3]={115.f,777.f,5200.f};
+        for(int t=0;t<3;++t){
+            ResonantEQAN d; setAN(d); long blk=0; double env[kNumBands]={0}; int n=0;
+            for(int b=0;b<4000;++b){
+                for(int s=0;s<FRAMELENGTH;++s) d.mIn.buffer()[s]=0.3f*sinf(2*3.14159265f*tones[t]*(blk*FRAMELENGTH+s)/48000.f);
+                d.process();
+                if(b>3000){for(int i=0;i<kNumBands;++i)env[i]+=d.mEnvOut[i].buffer()[FRAMELENGTH-1];n++;}
+                ++blk;
+            }
+            int pk=0; for(int i=0;i<kNumBands;++i){env[i]/=n; if(env[i]>env[pk])pk=i;}
+            if(pk!=expect[t]) ok=false;
+            printf("antrack: %5.0fHz -> peak band %d (expect %d)%s\n",tones[t],pk,expect[t],pk==expect[t]?"":"  <-- MISS");
+        }
+        printf("antrack: %s\n", ok?"PASS":"FAIL"); return ok?0:1;
+    }
+    if (!strcmp(argv[1], "anenv")) {
+        // Envelope rises under tone, releases to ~0 after; and the 29 Hz band's
+        // envelope stays smooth (per-band release floor) even at fast settings.
+        ResonantEQAN d;
+        for(int i=0;i<kNumBands;++i) fill(d.mBand[i],0.0f);
+        fill(d.mRegenIn,0.0f); fill(d.mEnvRiseIn,0.8f); fill(d.mEnvFallIn,0.2f);
+        fill(d.mEnvGainIn,1.0f); fill(d.mLevelIn,1.0f);
+        long blk=0; float onEnv=0,offEnv=0;
+        for(int b=0;b<3000;++b){ bool on=(b<1500);
+            for(int s=0;s<FRAMELENGTH;++s) d.mIn.buffer()[s]= on?0.3f*sinf(2*3.14159265f*777*(blk*FRAMELENGTH+s)/48000.f):0.f;
+            d.process();
+            if(b==1490)onEnv=d.mEnvOut[5].buffer()[FRAMELENGTH-1];
+            if(b==2900)offEnv=d.mEnvOut[5].buffer()[FRAMELENGTH-1]; ++blk; }
+        // ripple on 29 Hz band, fast settings
+        ResonantEQAN r;
+        for(int i=0;i<kNumBands;++i) fill(r.mBand[i],0.0f);
+        fill(r.mRegenIn,0.0f); fill(r.mEnvRiseIn,0.9f); fill(r.mEnvFallIn,0.9f);
+        fill(r.mEnvGainIn,1.0f); fill(r.mLevelIn,1.0f);
+        long rb=0; double s1=0,s2=0; long rn=0;
+        for(int b=0;b<6000;++b){ for(int s=0;s<FRAMELENGTH;++s) r.mIn.buffer()[s]=0.3f*sinf(2*3.14159265f*29*(rb*FRAMELENGTH+s)/48000.f);
+            r.process(); if(b>4000)for(int s=0;s<FRAMELENGTH;++s){float e=r.mEnvOut[0].buffer()[s];s1+=e;s2+=double(e)*e;rn++;} ++rb; }
+        double m=s1/rn,var=s2/rn-m*m,cov=sqrt(var>0?var:0)/(m>1e-9?m:1e-9);
+        const bool ok = onEnv>0.05f && offEnv<onEnv*0.1f && cov<0.35;
+        printf("anenv: on=%.3f off=%.4f  29Hz ripple CoV=%.1f%%  %s\n",onEnv,offEnv,100*cov,ok?"PASS":"FAIL");
+        return ok?0:1;
+    }
+    if (!strcmp(argv[1], "anstab")) {
+        // Regen at max + all bands boosted + single ping → Main and all 10 env
+        // outs finite and bounded (self-oscillation held by the soft-limit).
+        ResonantEQAN d;
+        for(int i=0;i<kNumBands;++i) fill(d.mBand[i],0.6f);
+        fill(d.mRegenIn,1.0f); fill(d.mEnvRiseIn,0.7f); fill(d.mEnvFallIn,0.3f);
+        fill(d.mEnvGainIn,1.0f); fill(d.mLevelIn,1.0f);
+        long nf=0; float pk=0;
+        for(int b=0;b<8000;++b){ for(int s=0;s<FRAMELENGTH;++s) d.mIn.buffer()[s]=(b==0&&s==0)?0.3f:0.0f;
+            d.process();
+            for(int s=0;s<FRAMELENGTH;++s){ float y=d.mMain.buffer()[s]; if(!std::isfinite(y))nf++; else if(fabsf(y)>pk)pk=fabsf(y);
+                for(int i=0;i<kNumBands;++i) if(!std::isfinite(d.mEnvOut[i].buffer()[s]))nf++; } }
+        printf("anstab: Main peak=%.3f nonFinite=%ld  %s\n",pk,nf,(nf==0&&pk<=1.001f)?"PASS":"FAIL");
+        return (nf==0&&pk<=1.001f)?0:1;
     }
 
     fprintf(stderr, "unknown mode\n");

@@ -22,6 +22,7 @@ ResonantEQMO::ResonantEQMO()
     for (int i = 0; i < kNumBands; ++i) addInput(mBand[i]);
     addInput(mComb1FbIn);
     addInput(mComb2FbIn);
+    addInput(mDriftIn);
     addInput(mLevelIn);
     addOutput(mMain);
     addOutput(mComb1);
@@ -40,10 +41,11 @@ void ResonantEQMO::process()
     float       *comb2 = mComb2.buffer();
     const int N = FRAMELENGTH;
 
+    const float drift = std::max(0.0f, std::min(mDriftIn.buffer()[0], 1.0f));
     for (int i = 0; i < kNumBands; ++i) {
         const float cv = mBand[i].buffer()[0];
         mBandView[i] = cv < -1.0f ? -1.0f : (cv > 1.0f ? 1.0f : cv);
-        mC[i] = computeBand(i, cv);
+        mC[i] = computeBand(i, cv, drift);
     }
 
     const float fb1    = std::max(0.0f, std::min(mComb1FbIn.buffer()[0], 1.0f)) * kFbMax;

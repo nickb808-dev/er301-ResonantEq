@@ -14,6 +14,7 @@ ResonantEQ::ResonantEQ()
     addInput(mInL);
     addInput(mInR);
     for (int i = 0; i < kNumBands; ++i) addInput(mBand[i]);
+    addInput(mDriftIn);
     addInput(mLevelIn);
     addOutput(mOutL);
     addOutput(mOutR);
@@ -31,10 +32,11 @@ void ResonantEQ::process()
     float *outR = mOutR.buffer();
     const int N = FRAMELENGTH;
 
+    const float drift = std::max(0.0f, std::min(mDriftIn.buffer()[0], 1.0f));
     for (int i = 0; i < kNumBands; ++i) {
         const float cv = mBand[i].buffer()[0];
         mBandView[i] = cv < -1.0f ? -1.0f : (cv > 1.0f ? 1.0f : cv);
-        mC[i] = computeBand(i, cv);
+        mC[i] = computeBand(i, cv, drift);
     }
 
     const float level  = std::max(0.0f, std::min(mLevelIn.buffer()[0], 2.0f));

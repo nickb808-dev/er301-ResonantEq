@@ -67,6 +67,14 @@ function ResonantEQMO:onLoadGraph(channelCount)
   connect(fb2Param, "Out", eq, "Comb2FB")
   self:addMonoBranch("comb2fb", fb2Param, "In", fb2Param, "Out")
 
+  -- Drift — analog component tolerance [0,1] (0 = perfect … 1 = vintage-loose).
+  local driftParam = self:addObject("driftParam", app.GainBias())
+  local driftRange = self:addObject("driftRange", app.MinMax())
+  driftParam:hardSet("Bias", 0.0)
+  connect(driftParam, "Out", driftRange, "In")
+  connect(driftParam, "Out", eq, "Drift")
+  self:addMonoBranch("drift", driftParam, "In", driftParam, "Out")
+
   local levelParam = self:addObject("levelParam", app.GainBias())
   local levelRange = self:addObject("levelRange", app.MinMax())
   levelParam:hardSet("Bias", 1.0)
@@ -122,6 +130,18 @@ function ResonantEQMO:onLoadViews(objects, branches)
   }
   expanded[12] = "comb2fb"
 
+  controls.drift = GainBias {
+    button      = "drift",
+    description = "Drift — analog component tolerance",
+    branch      = branches.drift,
+    gainbias    = objects.driftParam,
+    range       = objects.driftRange,
+    biasMap     = Encoder.getMap("[0,1]"),
+    initialBias = 0.0,
+    gainMap     = Encoder.getMap("[-1,1]"),
+  }
+  expanded[13] = "drift"
+
   controls.level = GainBias {
     button      = "level",
     description = "Output Level (unity = 1)",
@@ -132,7 +152,7 @@ function ResonantEQMO:onLoadViews(objects, branches)
     initialBias = 1.0,
     gainMap     = Encoder.getMap("[-1,1]"),
   }
-  expanded[13] = "level"
+  expanded[14] = "level"
 
   -- Live band-value phosphor scope (Dirac/Varia-style), leading the strip.
   controls.bands = BandsView {

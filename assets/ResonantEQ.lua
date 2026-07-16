@@ -46,6 +46,14 @@ function ResonantEQ:onLoadGraph(channelCount)
     self:addMonoBranch("band" .. i, p, "In", p, "Out")
   end
 
+  -- Drift — analog component tolerance [0,1] (0 = perfect … 1 = vintage-loose).
+  local driftParam = self:addObject("driftParam", app.GainBias())
+  local driftRange = self:addObject("driftRange", app.MinMax())
+  driftParam:hardSet("Bias", 0.0)
+  connect(driftParam, "Out", driftRange, "In")
+  connect(driftParam, "Out", eq, "Drift")
+  self:addMonoBranch("drift", driftParam, "In", driftParam, "Out")
+
   local levelParam = self:addObject("levelParam", app.GainBias())
   local levelRange = self:addObject("levelRange", app.MinMax())
   levelParam:hardSet("Bias", 1.0)
@@ -78,6 +86,18 @@ function ResonantEQ:onLoadViews(objects, branches)
     expanded[i] = name
   end
 
+  controls.drift = GainBias {
+    button      = "drift",
+    description = "Drift — analog component tolerance",
+    branch      = branches.drift,
+    gainbias    = objects.driftParam,
+    range       = objects.driftRange,
+    biasMap     = Encoder.getMap("[0,1]"),
+    initialBias = 0.0,
+    gainMap     = Encoder.getMap("[-1,1]"),
+  }
+  expanded[11] = "drift"
+
   controls.level = GainBias {
     button      = "level",
     description = "Output Level (unity = 1)",
@@ -88,7 +108,7 @@ function ResonantEQ:onLoadViews(objects, branches)
     initialBias = 1.0,
     gainMap     = Encoder.getMap("[-1,1]"),
   }
-  expanded[11] = "level"
+  expanded[12] = "level"
 
   -- Live band-value phosphor scope (Dirac/Varia-style), leading the strip.
   controls.bands = BandsView {

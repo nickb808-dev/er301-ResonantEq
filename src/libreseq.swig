@@ -1,6 +1,7 @@
 /* libreseq.swig — SWIG interface for the Resonant EQ ER-301 Objects.
- * Two units: ResonantEQ (stereo) and ResonantEQMO (mono, multi-out + feedback),
- * plus BandsGraphic (phosphor band-value scope, followable from either unit). */
+ * Three units: ResonantEQ (stereo), ResonantEQMO (mono, multi-out + feedback),
+ * ResonantEQAN (mono analyzer: Main + 10 per-band envelope followers), plus
+ * BandsGraphic (phosphor band-value scope, followable from any unit). */
 
 %module reseq_libreseq
 
@@ -10,6 +11,7 @@
 #undef SWIGLUA
 #include <ResonantEQ.h>
 #include <ResonantEQMO.h>
+#include <ResonantEQAN.h>
 #include <BandsGraphic.h>
 #define SWIGLUA
 using namespace reseq;
@@ -17,4 +19,5 @@ using namespace reseq;
 
 %include <ResonantEQ.h>
 %include <ResonantEQMO.h>
+%include <ResonantEQAN.h>
 %include <BandsGraphic.h>
