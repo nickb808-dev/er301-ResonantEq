@@ -2,7 +2,7 @@
 
 A ten-band fixed-frequency resonant filter bank, inspired by
 the **Serge Resonant Equalizer**. Each band is an independently CV-controllable
-resonant bandpass at a classic Serge centre frequency; sweep a band from a deep
+resonant bandpass at a classic Serge center frequency; sweep a band from a deep
 cancellation notch, through flat, up to a boosted resonant peak that pings and
 self-oscillates.
 
@@ -24,7 +24,7 @@ Package name on the ER-301: **Resonant EQ** (`reseq`), version 0.6.1.
 
 ## Bands
 
-Ten resonant bandpass filters at the Serge centre frequencies:
+Ten resonant bandpass filters at the Serge center frequencies:
 
 ```
 29 · 61 · 115 · 218 · 411 · 777 · 1500 · 2800 · 5200 · 11000 Hz
@@ -144,7 +144,7 @@ vocoder.
 ## Drift — analog component tolerance
 
 Every unit has a **Drift** knob `[0, 1]`. Each band carries a fixed characteristic
-offset in its centre frequency (±~3%) and Q (±~25%), and Drift scales how much is
+offset in its center frequency (±~3%) and Q (±~25%), and Drift scales how much is
 applied: **0** = mathematically perfect (default, bit-identical to no Drift), **1**
 = "vintage-loose", where every band pulls off its nominal tuning by its own
 amount so the bank feels organic instead of clinical. The offsets are fixed (a
@@ -163,7 +163,7 @@ CV → gain/Q voicing map. The audio path is pure add/multiply/one-divide.
 
 The ER-301 runs a TI am335x (Cortex-A8), where runtime `sinf`/`cosf` called from
 a package `.so` miscompute (a package→firmware libm call-boundary bug). The band
-frequencies are fixed, so the only trig — `g = tan(π·f/fs)` for the ten centres —
+frequencies are fixed, so the only trig — `g = tan(π·f/fs)` for the ten centers —
 is a compile-time `constexpr` table (`kBandG`). No libm trig runs at runtime;
 `nm` confirms it. Both input and output are NaN/Inf sanitised, and outputs (and
 each feedback path) are soft-limited so resonant and self-oscillating signals
