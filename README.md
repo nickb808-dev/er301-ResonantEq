@@ -1,7 +1,6 @@
 # Resonant EQ
 
-A ten-band fixed-frequency resonant filter bank for the
-[ER-301 Sound Computer](https://www.orthogonaldevices.com/er-301), inspired by
+A ten-band fixed-frequency resonant filter bank, inspired by
 the **Serge Resonant Equalizer**. Each band is an independently CV-controllable
 resonant bandpass at a classic Serge centre frequency; sweep a band from a deep
 cancellation notch, through flat, up to a boosted resonant peak that pings and
