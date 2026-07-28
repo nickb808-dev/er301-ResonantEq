@@ -1,6 +1,6 @@
 # Resonant EQ
 
-A ten-band fixed-frequency resonant filter bank, inspired by
+A ten-band fixed-frequency resonant filter bank inspired by
 the **Serge Resonant Equalizer**. Each band is an independently CV-controllable
 resonant bandpass at a classic Serge center frequency; sweep a band from a deep notch, through flat, up to a boosted resonant peak that pings and
 self-oscillates.
